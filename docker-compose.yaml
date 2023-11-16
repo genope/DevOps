@@ -3,7 +3,7 @@ version: '3'
 services:
   # MySQL service
   mysql:
-    image: mysql:latest
+    image: mysql:8
     restart: always
     container_name: mysql
     environment:
@@ -18,7 +18,7 @@ services:
 
   # Spring Boot service
   springboot-app:
-    image: lahdid/devops:back
+    image: back:v1
     restart: on-failure
     ports:
       - "8082:8082"
@@ -35,7 +35,7 @@ services:
 
   # Angular service
   angular-app:
-    image: lahdid/devops:front
+    image: front:v1
     ports:
       - "4200:4200"
     depends_on:
