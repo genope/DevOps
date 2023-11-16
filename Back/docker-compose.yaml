@@ -1,24 +1,35 @@
-version: "3"
+version: '3'
+
 services:
-  springboot-app:
-    # container_name: spring-app
-    image: devops:v1
+  # MySQL service
+  mysql:
+    image: mysql:8
     restart: always
-    build: .
-    ports:
-      - 9070:8080
+    container_name: mysql
     environment:
-      MYSQL_HOST: mysqldb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_PORT: 3306
-  mysqldb:
-    container_name: mysqldb
-    image: mysql
-    volumes:
-      - ./mysql:/var/lib/mysql
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_DATABASE: devopsdb
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: devops
+    ports:
+      - "3306:3306"
+    networks:
+      - devopsnetwork
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  # Spring Boot service
+  springboot-app:
+    image: back:v1
+    restart: on-failure
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_DRIVERCLASSNAME: "com.mysql.cj.jdbc.Driver"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/devops?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "root"
+      SPRING_JPA_HIBERNATE_DDL-AUTO: "update"
+    depends_on:
+      - mysql
+    networks:
+      - devopsnetwork
+
