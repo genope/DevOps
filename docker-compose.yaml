@@ -18,7 +18,7 @@ services:
 
   # Spring Boot service
   springboot-app:
-    image:imageback:v1
+    image: g1nope/devops_project:imagebackv1
     restart: on-failure
     ports:
       - "8090:8090"
