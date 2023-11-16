@@ -18,7 +18,7 @@ services:
 
   # Spring Boot service
   springboot-app:
-    image: back:v1
+    image:imageback:v1
     restart: on-failure
     ports:
       - "8090:8090"
@@ -35,7 +35,7 @@ services:
 
   # Angular service
   angular-app:
-    image: front:v1
+    image: imagefront:v1
     ports:
       - "4200:4200"
     depends_on:
